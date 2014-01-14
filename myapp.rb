@@ -80,3 +80,24 @@ helpers do
   include Rack::Utils
   alias_method :h, :escape_html
 end
+
+#Routes the delete function to the delete.erb file when a user clicks the delete link.
+get '/posts/:id/delete' do
+  @post = Post.find(params[:id])
+  @title = "Confirm deletion of note ##{params[:id]}"
+  if @post
+    erb :"posts/delete"
+  else
+    redirect'/', :error => "Can't find that post."
+  end
+end
+
+#Route to complete the delete function when the user clicks the link
+delete '/posts/:id' do
+  n = Post.find(params[:id])
+  if n.destroy  
+          redirect '/', :notice => 'Note deleted successfully.'  
+      else  
+          redirect '/', :error => 'Error deleting note.'  
+      end
+end
