@@ -74,3 +74,9 @@ put "/posts/:id" do
   @post.update(params[:post])
   redirect "/posts/#{@post.id}"
 end
+
+#Escaping fields to prevent xss for security
+helpers do
+  include Rack::Utils
+  alias_method :h, :escape_html
+end
